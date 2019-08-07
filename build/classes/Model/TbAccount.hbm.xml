@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 7, 2019 9:04:55 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Model.TbAccount" table="tb_account" catalog="hmthanh" optimistic-lock="version">
+        <id name="no" type="java.lang.Integer">
+            <column name="No" />
+            <generator class="identity" />
+        </id>
+        <property name="username" type="string">
+            <column name="Username" />
+        </property>
+        <property name="password" type="string">
+            <column name="Password" />
+        </property>
+        <property name="permit" type="java.lang.Integer">
+            <column name="Permit" />
+        </property>
+    </class>
+</hibernate-mapping>
