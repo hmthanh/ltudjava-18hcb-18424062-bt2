@@ -5,10 +5,9 @@
  */
 package JavaForm;
 
-import Entities.Student2;
-import JavaCode.CSVReader;
-import JavaCode.CSVWriter;
-import JavaCode.Utils;
+import DAO.ClassDAO;
+import Model.TbClasses;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -136,7 +135,7 @@ public class FormClasses extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(127, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,36 +146,36 @@ public class FormClasses extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private final String[] columnNames = {"STT", "MSSV", "Họ tên", "Gới tính", "CMND"};
-    public List<String> className = Utils.listAllCSVFile("Classes");
-
     public void LoadDataToTable() {
-        // TODO add your handling code here:
         Integer classID = cmbClass.getSelectedIndex();
         if (classID < 0) {
             return;
         }
+        String className = cmbClass.getSelectedItem().toString();
+        ClassDAO dao = new ClassDAO();
+        List<TbClasses> data = dao.getAllBySubject(className);
 
-        CSVReader reader = new CSVReader();
-        Student2 std = new Student2();
-        String fileName = "/Data/Classes/" + className.get(classID) + ".csv";
-        List<Student2> data = reader.readCSV(fileName, std);
-        String[][] dataTable = new String[data.size()][5];
+        List<String[]> dataTable = new ArrayList<>();
         for (int i = 0; i < data.size(); i++) {
-            dataTable[i] = data.get(i).toStringData(Integer.toString(i));
+            TbClasses std = data.get(i);
+            String[] obj = new String[6];
+            obj[0] = std.getNo().toString();
+            obj[1] = std.getStudentId();
+            obj[2] = std.getFullname();
+            obj[3] = std.getGender();
+            obj[4] = std.getCardId();
+            obj[5] = std.getSubjectId();
+            dataTable.add(obj);
         }
-        TableModel table;
-        table = new DefaultTableModel(dataTable, columnNames);
+        Object[] columnNames = {"STT", "MSSV", "Họ tên", "Gới tính", "CMND"};
+        DefaultTableModel model = new DefaultTableModel(dataTable.toArray(new Object[][]{}), columnNames);
+        model.setColumnIdentifiers(columnNames);
         tableData.removeAll();
-        tableData.setModel(table);
+        tableData.setModel(model);
     }
+
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
-        cmbClass.removeAllItems();
-        className = Utils.listAllCSVFile("Classes");
-        for (int i = 0; i < className.size(); i++) {
-            cmbClass.addItem(className.get(i));
-        }
+        updateCmb();
         Integer classID = cmbClass.getSelectedIndex();
         if (classID == 0) {
             LoadDataToTable();
@@ -189,50 +188,45 @@ public class FormClasses extends javax.swing.JInternalFrame {
         if (classID >= 0) {
             LoadDataToTable();
         }
-
     }//GEN-LAST:event_cmbClassItemStateChanged
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
+        String subjName = cmbClass.getSelectedItem().toString();
         int[] idx = tableData.getSelectedRows();
         if (idx.length <= 0) {
             JOptionPane.showMessageDialog(null, "Vui lòng chọn sinh viên cần xóa", "Không đúng", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        Integer classID = cmbClass.getSelectedIndex();
-        if (classID < 0) {
-            return;
-        }
-
-        CSVReader reader = new CSVReader();
-        Student2 std = new Student2();
-        String filename = "/Data/Classes/" + className.get(classID) + ".csv";
-        List<Student2> dataFromCSV;
-        dataFromCSV = reader.readCSV(filename, std);
-        DefaultTableModel dm = (DefaultTableModel)tableData.getModel();
-        dm.fireTableDataChanged();
+        TableModel model = tableData.getModel();
+        List<TbClasses> list = new ArrayList();
 
         for (int i = 0; i < idx.length; i++) {
-            dataFromCSV.remove(idx[i]);
+            TbClasses cls = new TbClasses();
+            String stdID = model.getValueAt(idx[i], 1).toString();
+            Integer no = Integer.valueOf(model.getValueAt(idx[i], 0).toString());
+//            cls.setStudentId(stdID);
+            cls.setNo(no);
+            list.add(cls);
         }
 
-        CSVWriter writer = new CSVWriter();
-        Boolean isS = writer.writeCSV(filename, dataFromCSV, new Student2());
-        if (isS) {
-            JOptionPane.showMessageDialog(null, "Cập nhật thành công", "Đã cập nhật điểm số vào sơ sở dữ liệu", JOptionPane.INFORMATION_MESSAGE);
-            String[][] dataTable = new String[dataFromCSV.size()][5];
-            for (int i = 0; i < dataFromCSV.size(); i++) {
-                dataTable[i] = dataFromCSV.get(i).toStringData(Integer.toString(i));
-            }
-            TableModel table;
-            table = new DefaultTableModel(dataTable, columnNames);
-            tableData.removeAll();
-            tableData.setModel(table);
+        ClassDAO dao = new ClassDAO();
+        Boolean isDelete = dao.removeSubject(list);
+        if (!isDelete) {
+            JOptionPane.showMessageDialog(null, "Xoá thất bại", "Lỗi khi cập nhật sơ sở dữ liệu", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(null, "Cập nhật thất bại", "Lỗi khi cập nhật sơ sở dữ liệu", JOptionPane.INFORMATION_MESSAGE);
+            LoadDataToTable();
+            JOptionPane.showMessageDialog(null, "Xóa thành công", "Đã cập nhật điểm số vào sơ sở dữ liệu", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
-
+    public void updateCmb() {
+        cmbClass.removeAllItems();
+        ClassDAO dao = new ClassDAO();
+        List<String> list = dao.getAllSubject();
+        for (int i = 0; i < list.size(); i++) {
+            cmbClass.addItem(list.get(i));
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;

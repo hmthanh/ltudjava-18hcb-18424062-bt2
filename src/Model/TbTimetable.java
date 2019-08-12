@@ -1,5 +1,5 @@
 package Model;
-// Generated Aug 7, 2019 9:04:54 AM by Hibernate Tools 4.3.1
+// Generated Aug 9, 2019 2:11:40 PM by Hibernate Tools 4.3.1
 
 
 
@@ -11,16 +11,16 @@ public class TbTimetable  implements java.io.Serializable {
 
      private Integer no;
      private Integer subjectId;
-     private Integer classId;
-     private Integer studentId;
+     private String subjectName;
+     private Integer room;
 
     public TbTimetable() {
     }
 
-    public TbTimetable(Integer subjectId, Integer classId, Integer studentId) {
+    public TbTimetable(Integer subjectId, String subjectName, Integer room) {
        this.subjectId = subjectId;
-       this.classId = classId;
-       this.studentId = studentId;
+       this.subjectName = subjectName;
+       this.room = room;
     }
    
     public Integer getNo() {
@@ -37,19 +37,19 @@ public class TbTimetable  implements java.io.Serializable {
     public void setSubjectId(Integer subjectId) {
         this.subjectId = subjectId;
     }
-    public Integer getClassId() {
-        return this.classId;
+    public String getSubjectName() {
+        return this.subjectName;
     }
     
-    public void setClassId(Integer classId) {
-        this.classId = classId;
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
-    public Integer getStudentId() {
-        return this.studentId;
+    public Integer getRoom() {
+        return this.room;
     }
     
-    public void setStudentId(Integer studentId) {
-        this.studentId = studentId;
+    public void setRoom(Integer room) {
+        this.room = room;
     }
 
 

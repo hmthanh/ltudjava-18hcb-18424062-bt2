@@ -46,9 +46,9 @@ public class CSVReader<T> {
         for (int i = 0; i < records.size(); i++) {
             List<String> metaData = records.get(i);
             Object item = null;
-            if (type instanceof Student2) {
-                item = Student2.readFromMetaData(metaData);
-            }
+//            if (type instanceof Student2) {
+//                item = Student2.readFromMetaData(metaData);
+//            }
             if (type instanceof Account) {
                 item = Account.readFromMetaData(metaData);
             }
@@ -65,7 +65,7 @@ public class CSVReader<T> {
     }
 
     public static List<List<String>> readToBuffer(BufferedReader buffReader) throws IOException {
-        List<List<String>> records = new ArrayList<List<String>>();
+        List<List<String>> records = new ArrayList<>();
         String line;
         while ((line = buffReader.readLine()) != null) {
 

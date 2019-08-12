@@ -1,5 +1,5 @@
 package Model;
-// Generated Aug 7, 2019 9:04:54 AM by Hibernate Tools 4.3.1
+// Generated Aug 9, 2019 2:11:40 PM by Hibernate Tools 4.3.1
 
 
 
@@ -13,44 +13,89 @@ public class TbSubject  implements java.io.Serializable {
      private String subjectId;
      private String name;
      private String room;
+     private String classId;
 
     public TbSubject() {
     }
 
-    public TbSubject(String subjectId, String name, String room) {
-       this.subjectId = subjectId;
-       this.name = name;
-       this.room = room;
+    public TbSubject(String subjectId, String name, String room, String classId) {
+        this.subjectId = subjectId;
+        this.name = name;
+        this.room = room;
+        this.classId = classId;
     }
-   
+
+    /**
+     * @return the no
+     */
     public Integer getNo() {
-        return this.no;
+        return no;
     }
-    
+
+    /**
+     * @param no the no to set
+     */
     public void setNo(Integer no) {
         this.no = no;
     }
+
+    /**
+     * @return the subjectId
+     */
     public String getSubjectId() {
-        return this.subjectId;
+        return subjectId;
     }
-    
+
+    /**
+     * @param subjectId the subjectId to set
+     */
     public void setSubjectId(String subjectId) {
         this.subjectId = subjectId;
     }
+
+    /**
+     * @return the name
+     */
     public String getName() {
-        return this.name;
+        return name;
     }
-    
+
+    /**
+     * @param name the name to set
+     */
     public void setName(String name) {
         this.name = name;
     }
+
+    /**
+     * @return the room
+     */
     public String getRoom() {
-        return this.room;
+        return room;
     }
-    
+
+    /**
+     * @param room the room to set
+     */
     public void setRoom(String room) {
         this.room = room;
     }
+
+    /**
+     * @return the classId
+     */
+    public String getClassId() {
+        return classId;
+    }
+
+    /**
+     * @param classId the classId to set
+     */
+    public void setClassId(String classId) {
+        this.classId = classId;
+    }
+
+    
 
 
 

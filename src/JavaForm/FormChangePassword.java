@@ -5,10 +5,8 @@
  */
 package JavaForm;
 
-import Entities.Account;
-import JavaCode.CSVReader;
-import JavaCode.CSVWriter;
-import java.util.List;
+import DAO.AccountDAO;
+import Model.TbAccount;
 import javax.swing.JOptionPane;
 
 /**
@@ -33,7 +31,7 @@ public class FormChangePassword extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jbtnLogin = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
         txtUsername = new javax.swing.JTextField();
         jlabel_Username = new javax.swing.JLabel();
         jlabel_Password = new javax.swing.JLabel();
@@ -44,6 +42,7 @@ public class FormChangePassword extends javax.swing.JFrame {
         jlabel_Password2 = new javax.swing.JLabel();
         jlabel_Username1 = new javax.swing.JLabel();
         cmbPermit = new javax.swing.JComboBox<>();
+        btnLogin = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login Form");
@@ -56,12 +55,12 @@ public class FormChangePassword extends javax.swing.JFrame {
             }
         });
 
-        jbtnLogin.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jbtnLogin.setText("Đăng nhập");
-        jbtnLogin.setName("Login"); // NOI18N
-        jbtnLogin.addActionListener(new java.awt.event.ActionListener() {
+        btnCancel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnCancel.setText("Hủy");
+        btnCancel.setName("Login"); // NOI18N
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnLoginActionPerformed(evt);
+                btnCancelActionPerformed(evt);
             }
         });
 
@@ -101,18 +100,29 @@ public class FormChangePassword extends javax.swing.JFrame {
         cmbPermit.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         cmbPermit.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        btnLogin.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnLogin.setText("Đổi mật khẩu");
+        btnLogin.setToolTipText("");
+        btnLogin.setName("Login"); // NOI18N
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(64, 64, 64)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jbtnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(88, 88, 88))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 13, Short.MAX_VALUE)
+                        .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(jlabel_Username)
@@ -124,11 +134,11 @@ public class FormChangePassword extends javax.swing.JFrame {
                                 .addComponent(txtOld)
                                 .addComponent(txtUsername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
                                 .addComponent(txtPassword1)
-                                .addComponent(txtPassword2))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jlabel_Username1)
-                        .addGap(18, 18, 18)
-                        .addComponent(cmbPermit, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtPassword2)))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jlabel_Username1)
+                            .addGap(18, 18, 18)
+                            .addComponent(cmbPermit, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(74, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -154,9 +164,11 @@ public class FormChangePassword extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlabel_Password)
                     .addComponent(txtPassword2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jbtnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31))
         );
 
         pack();
@@ -167,61 +179,65 @@ public class FormChangePassword extends javax.swing.JFrame {
         cmbPermit.removeAllItems();
         cmbPermit.addItem("Sinh viên");
         cmbPermit.addItem("Giáo vụ");
+        txtUsername.setText(FormLogin.UserName);
+        txtOld.setText(FormLogin.Password);
+        cmbPermit.setSelectedIndex(FormLogin.Permit);
     }//GEN-LAST:event_formWindowOpened
 
     private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUsernameActionPerformed
 
-    private void jbtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnLoginActionPerformed
-        // TODO add your handling code here:
-        String username = txtUsername.getText();
-        String old = txtOld.getText();
-        String password1 = txtPassword1.getText();
-        String password2 = txtPassword2.getText();
-        if (!password1.equals(password2)) {
-            JOptionPane.showMessageDialog(null, "Đăng nhập không thành công", "Vui lòng xem lại mật khẩu\n\"Tài khoản hoặc mật khẩu không đúng\"", JOptionPane.INFORMATION_MESSAGE);
-            txtPassword2.setText("");
-            txtPassword1.setText("");
-            txtOld.setText("");
-            txtUsername.setText("");
-            return;
-        }
-        String permit = cmbPermit.getSelectedIndex() == 0 ? "Student" : "Admin";
-
-        CSVReader<Account> reader = new CSVReader<>();
-        String filename = "/Data/Account/" + permit + ".csv";
-        List<Account> data = reader.readCSV(filename, new Account());
-        Boolean hasPermit = false;
-        Account acc = new Account();
-        for (int i = 0; i < data.size(); i++) {
-            acc = data.get(i);
-            Boolean trueUsername = acc.getUserName().equals(username);
-            Boolean truePassword = acc.getPassword().equals(old);
-
-            if (trueUsername && truePassword) {
-                hasPermit = true;
-                break;
-            }
-        }
-
-        if (!hasPermit) {
-            JOptionPane.showMessageDialog(null, "Đăng nhập không thành công", "Vui lòng xem lại mật khẩu\n\"Tài khoản hoặc mật khẩu không đúng\"", JOptionPane.INFORMATION_MESSAGE);
-            txtPassword2.setText("");
-            txtPassword1.setText("");
-            txtOld.setText("");
-            txtUsername.setText("");
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        Integer permit = cmbPermit.getSelectedIndex() == 0 ? 1 : 2;
+        this.setVisible(false);
+        if (permit == 1) {
+            java.awt.EventQueue.invokeLater(() -> {
+                new StudentPermittion().setVisible(true);
+            });
         } else {
-            CSVWriter<Account> writer = new CSVWriter<>();
-            String fileName = "/Data/Account/" + permit + ".csv";
-            acc.setPassword(password2);
-            writer.update(fileName, data, acc);
-            this.setVisible(false);
             java.awt.EventQueue.invokeLater(() -> {
                 new AdminPermittion().setVisible(true);
             });
         }
-    }//GEN-LAST:event_jbtnLoginActionPerformed
+    }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        // TODO add your handling code here:
+        String username = txtUsername.getText();
+        String password = String.valueOf(txtOld.getPassword());
+        String newPwd1 = String.valueOf(txtPassword1.getPassword());
+        String newPwd2 = String.valueOf(txtPassword2.getPassword());
+        if (!newPwd1.equals(newPwd2)) {
+            JOptionPane.showMessageDialog(null, "Đăng nhập không thành công", "Vui lòng xem lại mật khẩu\n\"Tài khoản hoặc mật khẩu không đúng\"", JOptionPane.INFORMATION_MESSAGE);
+            txtPassword2.setText("");
+            txtPassword1.setText("");
+            return;
+        }
+        Integer permit = cmbPermit.getSelectedIndex() == 0 ? 1 : 2;
+        AccountDAO dao = new AccountDAO();
+        TbAccount acc = dao.getAccount(username, password, permit);
+        if (acc == null) {
+            JOptionPane.showMessageDialog(null, "Đăng nhập không thành công", "Vui lòng xem lại mật khẩu\n\"Tài khoản hoặc mật khẩu không đúng\"", JOptionPane.INFORMATION_MESSAGE);
+            txtPassword2.setText("");
+            txtPassword1.setText("");
+        } else {
+            acc.setPassword(newPwd1);
+            dao.updateAccount(acc);
+            JOptionPane.showMessageDialog(null, "Đã đổi mật khẩu thành công", "Thành công", JOptionPane.INFORMATION_MESSAGE);
+            this.setVisible(false);
+            if (permit == 1) {
+                java.awt.EventQueue.invokeLater(() -> {
+                    new StudentPermittion().setVisible(true);
+                });
+            } else {
+                java.awt.EventQueue.invokeLater(() -> {
+                    new AdminPermittion().setVisible(true);
+                });
+            }
+        }
+
+    }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
      * @param args the command line arguments
@@ -263,23 +279,11 @@ public class FormChangePassword extends javax.swing.JFrame {
         });
     }
 
-    private Boolean checkLogin(String username, String password, String permit) {
-        CSVReader reader = new CSVReader();
-        List<Account> data = reader.readCSV("/Data/Account/" + permit + ".csv", new Account());
-        for (int i = 0; i < data.size(); i++) {
-            Boolean trueUsername = data.get(i).getUserName().equals(username);
-            Boolean truePassword = data.get(i).getPassword().equals(password);
-
-            if (trueUsername && truePassword) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnLogin;
     private javax.swing.JComboBox<String> cmbPermit;
-    private javax.swing.JButton jbtnLogin;
     private javax.swing.JLabel jlabel_Password;
     private javax.swing.JLabel jlabel_Password1;
     private javax.swing.JLabel jlabel_Password2;

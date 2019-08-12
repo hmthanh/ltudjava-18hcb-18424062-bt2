@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Aug 7, 2019 9:04:55 AM by Hibernate Tools 4.3.1 -->
+<!-- Generated Aug 9, 2019 2:11:40 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="Model.TbScore" table="tb_score" catalog="hmthanh" optimistic-lock="version">
         <id name="no" type="java.lang.Integer">
             <column name="No" />
             <generator class="identity" />
         </id>
-        <property name="studentId" type="int">
+        <property name="studentId" type="string">
             <column name="StudentID" not-null="true" />
         </property>
         <property name="fullname" type="string">
@@ -25,6 +25,9 @@
         </property>
         <property name="avgScore" type="java.lang.Float">
             <column name="AvgScore" precision="255" scale="0" />
+        </property>
+        <property name="subjectId" type="string">
+            <column name="SubjectID" />
         </property>
     </class>
 </hibernate-mapping>

@@ -5,7 +5,9 @@
  */
 package JavaForm;
 
-import JavaCode.Utils;
+import DAO.ScoreDAO;
+import DAO.StudentDAO;
+import DAO.SubjectDAO;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -274,24 +276,19 @@ public class AdminPermittion extends javax.swing.JFrame {
     }//GEN-LAST:event_menuItemPasswordActionPerformed
     public static FormStudent _frmStudent = new FormStudent();
     public static FormScore _frmScore = new FormScore();
-
-    /**
-     *
-     */
-    public static FormSubject _frmSubject = new FormSubject();
     public static FormTimetable _frmTimetable = new FormTimetable();
 
     private void menuChoseClassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuChoseClassActionPerformed
         // TODO add your handling code here:
         JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         int returnValue = jfc.showOpenDialog(null);
-        // int returnValue = jfc.showSaveDialog(null);
 
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File selectedFile = jfc.getSelectedFile();
             String filePath = selectedFile.getAbsolutePath();
-            Boolean isS = Utils.importClass(filePath);
-            if (isS) {
+            StudentDAO dao = new StudentDAO();
+            Boolean isUpdate = dao.importFromFile(filePath);
+            if (isUpdate) {
                 JOptionPane.showMessageDialog(null, "Thành công", "Thêm sinh viên thành công !", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(null, "Thất bại", "Thêm sinh viên thất bại !", JOptionPane.INFORMATION_MESSAGE);
@@ -326,8 +323,9 @@ public class AdminPermittion extends javax.swing.JFrame {
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File selectedFile = jfc.getSelectedFile();
             String filePath = selectedFile.getAbsolutePath();
-            Boolean isS = Utils.importTimetable(filePath);
-            if (isS) {
+            SubjectDAO dao = new SubjectDAO();
+            Boolean isUpdate = dao.importFromFile(filePath);
+            if (isUpdate) {
                 JOptionPane.showMessageDialog(null, "Thành công", "Thêm thời khóa biểu thành công !", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(null, "Thất bại", "Thêm thời khóa biểu thất bại !", JOptionPane.INFORMATION_MESSAGE);
@@ -362,8 +360,9 @@ public class AdminPermittion extends javax.swing.JFrame {
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File selectedFile = jfc.getSelectedFile();
             String filePath = selectedFile.getAbsolutePath();
-            Boolean isS = Utils.importScore(filePath);
-            if (isS) {
+            ScoreDAO dao = new ScoreDAO();
+            Boolean isUpdated = dao.importFromFile(filePath);
+            if (isUpdated) {
                 JOptionPane.showMessageDialog(null, "Thành công", "Thêm bảng điểm thành công !", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(null, "Thất bại", "Thêm bảng điểm thất bại !", JOptionPane.INFORMATION_MESSAGE);

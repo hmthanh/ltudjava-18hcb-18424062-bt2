@@ -5,9 +5,8 @@
  */
 package JavaForm;
 
-import Entities.Student2;
-import JavaCode.CSVWriter;
-import JavaCode.Utils;
+import DAO.ClassDAO;
+import Model.TbClasses;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -66,28 +65,12 @@ public class FormAddSubjectStudent extends javax.swing.JInternalFrame {
         });
 
         cmbClass.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cmbClass.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cmbClassItemStateChanged(evt);
-            }
-        });
-        cmbClass.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                cmbClassMouseClicked(evt);
-            }
-        });
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton1.setText("Thêm sinh viên");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
-            }
-        });
-
-        txtStdID.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtStdIDActionPerformed(evt);
             }
         });
 
@@ -112,28 +95,6 @@ public class FormAddSubjectStudent extends javax.swing.JInternalFrame {
         jlabel_Password3.setToolTipText("");
 
         cmbGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cmbGender.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cmbGenderItemStateChanged(evt);
-            }
-        });
-        cmbGender.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                cmbGenderMouseClicked(evt);
-            }
-        });
-
-        txtCardID.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCardIDActionPerformed(evt);
-            }
-        });
-
-        txtFullname.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFullnameActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -211,44 +172,13 @@ public class FormAddSubjectStudent extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private final String[] strGender = {"Nam", "Nữ"};
-    public static List<String> classNames = Utils.listAllCSVFile("Classes");
-
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
         cmbGender.removeAllItems();
         cmbGender.addItem(strGender[0]);
         cmbGender.addItem(strGender[1]);
-        cmbClass.removeAllItems();
-        for (int i = 0; i < classNames.size(); i++) {
-            cmbClass.addItem(classNames.get(i));
-        }
+        updateCmb();
     }//GEN-LAST:event_formInternalFrameOpened
-
-    private void txtStdIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStdIDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtStdIDActionPerformed
-
-    private void cmbClassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbClassMouseClicked
-        // TODO add your handling code here:
-        classNames = Utils.listAllCSVFile("Classes");
-        cmbClass.removeAllItems();
-        for (int i = 0; i < classNames.size(); i++) {
-            cmbClass.addItem(classNames.get(i));
-        }
-    }//GEN-LAST:event_cmbClassMouseClicked
-
-    private void cmbClassItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbClassItemStateChanged
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_cmbClassItemStateChanged
-
-    private void cmbGenderItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbGenderItemStateChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbGenderItemStateChanged
-
-    private void cmbGenderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbGenderMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbGenderMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -256,28 +186,24 @@ public class FormAddSubjectStudent extends javax.swing.JInternalFrame {
         String fullName = txtFullname.getText();
         String gender = cmbGender.getSelectedItem().toString();
         String IDCard = txtCardID.getText();
-
         String className = cmbClass.getSelectedItem().toString();
-        Student2 std = new Student2("", stdID, fullName, gender, IDCard);
-        String fileName = "/Data/Classes/" + className + ".csv";
-        CSVWriter writer = new CSVWriter();
-        Boolean isS = writer.addItem(fileName, std);
-        if (isS) {
+        TbClasses cls = new TbClasses(stdID, fullName, gender, IDCard, className);
+        ClassDAO dao = new ClassDAO();
+        Boolean isUpdate = dao.addClass(cls);
+        if (isUpdate) {
             JOptionPane.showMessageDialog(null, "Thành công", "Thêm sinh viên thành công !", JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, "Thất bại", "Thêm sinh viên thất bại !", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void txtCardIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCardIDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCardIDActionPerformed
-
-    private void txtFullnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFullnameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFullnameActionPerformed
-
-    
+    public void updateCmb() {
+        cmbClass.removeAllItems();
+        ClassDAO dao = new ClassDAO();
+        List<String> list = dao.getAllSubject();
+        for (int i = 0; i < list.size(); i++) {
+            cmbClass.addItem(list.get(i));
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cmbClass;

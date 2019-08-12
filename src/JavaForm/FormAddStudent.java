@@ -5,9 +5,9 @@
  */
 package JavaForm;
 
-import Entities.Student2;
-import JavaCode.CSVWriter;
-import JavaCode.Utils;
+import DAO.ClassDAO;
+import DAO.StudentDAO;
+import Model.TbClasses;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -210,18 +210,11 @@ public class FormAddStudent extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private final String[] strGender = {"Nam", "Nữ"};
-    public static List<String> classNames = Utils.listAllCSVFile(Student2.getString());
-
-
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
         cmbGender.removeAllItems();
-        cmbGender.addItem(strGender[0]);
-        cmbGender.addItem(strGender[1]);
-        cmbClass.removeAllItems();
-        for (int i = 0; i < classNames.size(); i++) {
-            cmbClass.addItem(classNames.get(i));
-        }
+        cmbGender.addItem("Nam");
+        cmbGender.addItem("Nữ");
+        updateComb();
     }//GEN-LAST:event_formInternalFrameOpened
 
     private void txtStdIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStdIDActionPerformed
@@ -230,11 +223,7 @@ public class FormAddStudent extends javax.swing.JInternalFrame {
 
     private void cmbClassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbClassMouseClicked
         // TODO add your handling code here:
-        classNames = Utils.listAllCSVFile(Student2.getString());
-        cmbClass.removeAllItems();
-        for (int i = 0; i < classNames.size(); i++) {
-            cmbClass.addItem(classNames.get(i));
-        }
+       
     }//GEN-LAST:event_cmbClassMouseClicked
 
     private void cmbClassItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbClassItemStateChanged
@@ -256,13 +245,11 @@ public class FormAddStudent extends javax.swing.JInternalFrame {
         String fullName = txtFullname.getText();
         String gender = cmbGender.getSelectedItem().toString();
         String IDCard = txtCardID.getText();
-
         String className = cmbClass.getSelectedItem().toString();
-        Student2 std = new Student2("", stdID, fullName, gender, IDCard);
-        String fileName = "/Data/Student/" + className + ".csv";
-        CSVWriter writer = new CSVWriter();
-        Boolean isS = writer.addItem(fileName, std);
-        if (isS) {
+
+        StudentDAO dao = new StudentDAO();
+        Boolean isUpdated = dao.addStudent(stdID, fullName, gender, IDCard, className);
+        if (isUpdated) {
             JOptionPane.showMessageDialog(null, "Thành công", "Thêm sinh viên thành công !", JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, "Thất bại", "Thêm sinh viên thất bại !", JOptionPane.INFORMATION_MESSAGE);
@@ -276,8 +263,15 @@ public class FormAddStudent extends javax.swing.JInternalFrame {
     private void txtFullnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFullnameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtFullnameActionPerformed
+    public void updateComb() {
+        cmbClass.removeAllItems();
+        StudentDAO dao = new StudentDAO();
+        List<String> list = dao.getAllClass();
+        for (int i = 0; i < list.size(); i++) {
+            cmbClass.addItem(list.get(i));
+        }
+    }
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cmbClass;

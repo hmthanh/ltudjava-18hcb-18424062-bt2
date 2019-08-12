@@ -5,14 +5,8 @@
  */
 package JavaForm;
 
-import Entities.Account;
-import JavaCode.CSVReader;
-import JavaCode.HibernateUtil;
-import Model.TbAccount;
-import java.util.List;
+import DAO.AccountDAO;
 import javax.swing.JOptionPane;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 /**
  *
@@ -26,6 +20,9 @@ public class FormLogin extends javax.swing.JFrame {
     public FormLogin() {
         initComponents();
     }
+    public static String UserName = "";
+    public static String Password = "";
+    public static Integer Permit = 0;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -135,16 +132,21 @@ public class FormLogin extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    public static String UsernameLogin = "";
+    
     private void jbtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnLoginActionPerformed
         // TODO add your handling code here:
-        String username = jtext_Username.getText();
-        UsernameLogin = username;
-        String password = jtext_Password.getText();
-        Boolean hasPermit = checkLogin(username, password);
+        String username = jtext_Username.getText().trim();
+        UserName = username;
+        String password;
+        password = String.valueOf(jtext_Password.getPassword()).trim();
+        Password = password;
+
+        AccountDAO dao = new AccountDAO();
+        Permit = cmbPermit.getSelectedIndex();
+        Integer permit = Permit + 1;
         
-        
-        hasPermit = false;
+        Boolean hasPermit = dao.hasPermit(username, password, permit);
+//        hasPermit = true;
         if (hasPermit) {
             this.setVisible(false);
 
@@ -158,7 +160,6 @@ public class FormLogin extends javax.swing.JFrame {
                     new AdminPermittion().setVisible(true);
                 });
             }
-
         } else {
             JOptionPane.showMessageDialog(null, "Đăng nhập không thành công", "Vui lòng xem lại mật khẩu\n\"Tài khoản hoặc mật khẩu không đúng\"", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -174,6 +175,9 @@ public class FormLogin extends javax.swing.JFrame {
         cmbPermit.removeAllItems();
         cmbPermit.addItem("Sinh viên");
         cmbPermit.addItem("Giáo vụ");
+        if (FormLogin.Permit > 0){
+            cmbPermit.setSelectedIndex(FormLogin.Permit);
+        }
     }//GEN-LAST:event_formWindowOpened
 
     /**
@@ -212,28 +216,6 @@ public class FormLogin extends javax.swing.JFrame {
         });
     }
 
-    private Boolean checkLogin(String username, String password) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction transaction = session.beginTransaction();
-        TbAccount account;
-        account = new TbAccount();
-        session.save(account);
-        transaction.commit();
-        
-        CSVReader<Account> reader = new CSVReader<>();
-        String permit = cmbPermit.getSelectedIndex() == 0 ? "Student" : "Admin";
-        List<Account> data = reader.readCSV("/Data/Account/" + permit + ".csv", new Account());
-        for (int i = 0; i < data.size(); i++) {
-            Boolean trueUsername = data.get(i).getUserName().equals(username);
-            Boolean truePassword = data.get(i).getPassword().equals(password);
-
-            if (trueUsername && truePassword) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cmbPermit;

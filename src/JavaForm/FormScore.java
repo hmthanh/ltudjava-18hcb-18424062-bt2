@@ -5,10 +5,11 @@
  */
 package JavaForm;
 
+import DAO.ScoreDAO;
 import Entities.Score;
-import JavaCode.CSVReader;
 import JavaCode.CSVWriter;
 import JavaCode.Utils;
+import Model.TbScore;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -24,7 +25,7 @@ import javax.swing.table.TableModel;
 public class FormScore extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form frmStudent
+     * Creates new form frmScore
      */
     public FormScore() {
         initComponents();
@@ -266,56 +267,41 @@ public class FormScore extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private String[] columnNames = {"STT", "MSSV", "Họ tên", "Điểm GK", "Điểm CK", "Điểm khác", "Điểm tổng"};
+    
     public List<String> classNames = Utils.listAllCSVFile(Score.getString());
 
-    public void LoadStudentToTable(Integer classID) {
-        // TODO add your handling code here:
-        CSVReader reader = new CSVReader();
-        Score std = new Score();
-        List<Score> list = reader.readCSV("/Data/Score/" + classNames.get(classID) + ".csv", std);
-
-        List<Score> good = new ArrayList<>();
-        List<Score> bad = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getAvgScore() >= (float) (5.0)) {
-                good.add(list.get(i));
-            } else {
-                bad.add(list.get(i));
-            }
-        }
-        List<Score> data;
-        Integer idx = cmbResult.getSelectedIndex();
-        switch (idx) {
-            case 0:
-                data = list;
-                break;
-            case 1:
-                data = good;
-                break;
-            default:
-                data = bad;
-                break;
-        }
-        int soDau = good.size();
-        int soRot = bad.size();
-        int tongSo = list.size();
-
-        soDau_1.setText(Integer.toString(soDau));
-        soRot_1.setText(Integer.toString(soRot));
-        soDau_2.setText(Float.toString(100 * (float) soDau / (float) tongSo) + " %");
-        soRot_2.setText(Float.toString(100 * (float) soRot / (float) tongSo) + " %");
-        String[][] dataTable = new String[data.size()][7];
+    public void LoadScoreToTable() {
+        String className = cmbClass.getSelectedItem().toString();
+        Integer filter = cmbResult.getSelectedIndex();
+        ScoreDAO dao = new ScoreDAO();
+        List<TbScore> data = dao.getAllByFilter(filter, className);
+        String[] statis = dao.statistic(data);
+        soDau_1.setText(statis[0]);
+        soRot_1.setText(statis[1]);
+        soDau_2.setText(statis[2]);
+        soRot_2.setText(statis[3]);
+        
+        List<String[]> dataTable = new ArrayList<>();
         for (int i = 0; i < data.size(); i++) {
-            dataTable[i] = data.get(i).toStringData(Integer.toString(i));
+            TbScore std = data.get(i);
+            String[] obj = new String[7];
+            obj[0] = Integer.toString(i);
+            obj[1] = std.getStudentId();
+            obj[2] = std.getFullname();
+            obj[3] = std.getMiddleExam().toString();
+            obj[4] = std.getFinalExam().toString();
+            obj[5] = std.getPlusExam().toString();
+            obj[6] = std.getAvgScore().toString();
+            dataTable.add(obj);
         }
-        TableModel table;
-        table = new DefaultTableModel(dataTable, columnNames);
+        Object[] columnNames = {"STT", "MSSV", "Họ tên", "Điểm GK", "Điểm CK", "Điểm khác", "Điểm tổng"};
+        DefaultTableModel model = new DefaultTableModel(dataTable.toArray(new Object[][] {}), columnNames);
+        model.setColumnIdentifiers(columnNames);
         tableData.removeAll();
-        tableData.setModel(table);
+        tableData.setModel(model);
     }
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
-        LoadStudentToTable(0);
+        LoadScoreToTable();
         updateCombox();
         cmbResult.removeAllItems();
         cmbResult.addItem("Tất cả");
@@ -352,21 +338,14 @@ public class FormScore extends javax.swing.JInternalFrame {
         });
     }//GEN-LAST:event_formInternalFrameOpened
 
-    public void updateCombox() {
-        classNames = Utils.listAllCSVFile(Score.getString());
-        cmbClass.removeAllItems();
-        for (int i = 0; i < classNames.size(); i++) {
-            cmbClass.addItem(classNames.get(i));
-        }
-    }
+    
 
     private void cmbClassItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbClassItemStateChanged
         // TODO add your handling code here:
         Integer classID = cmbClass.getSelectedIndex();
         if (classID >= 0) {
-            LoadStudentToTable(classID);
+            LoadScoreToTable();
         }
-
     }//GEN-LAST:event_cmbClassItemStateChanged
 
     private void cmbResultItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbResultItemStateChanged
@@ -377,48 +356,55 @@ public class FormScore extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         Integer classID = cmbClass.getSelectedIndex();
         if (classID >= 0) {
-            LoadStudentToTable(classID);
+            LoadScoreToTable();
         }
     }//GEN-LAST:event_cmbResultActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        cmbResult.setSelectedIndex(0);
-        Integer classID = cmbClass.getSelectedIndex();
-        if (classID < 0) {
-            return;
-        }
-        CSVReader reader = new CSVReader();
-        TableModel table = tableData.getModel();
-        List<Score> dataFromTable;
-        dataFromTable = new ArrayList<>();
-        for (int i = 0; i < table.getRowCount(); i++) {
-            List<String> rowData = new ArrayList<>();
-            for (int j = 0; j < table.getColumnCount(); j++) {
-                rowData.add(table.getValueAt(i, j).toString());
-            }
-
-            Score score = Score.readFromMetaData(rowData);
-            dataFromTable.add(score);
-        }
-
-        CSVWriter writer = new CSVWriter();
-        String filename = "/Data/Score/" + classNames.get(classID) + ".csv";
-        Boolean isS = writer.writeCSV(filename, dataFromTable, new Score());
-        if (isS) {
-            JOptionPane.showMessageDialog(null, "Cập nhật thành công", "Đã cập nhật điểm số vào sơ sở dữ liệu", JOptionPane.INFORMATION_MESSAGE);
-            String[][] dataTable = new String[dataFromTable.size()][5];
-            for (int i = 0; i < dataFromTable.size(); i++) {
-                dataTable[i] = dataFromTable.get(i).toStringData(Integer.toString(i));
-            }
-            TableModel tbModel;
-            tbModel = new DefaultTableModel(dataTable, columnNames);
-            tableData.removeAll();
-            tableData.setModel(tbModel);
-        } else {
-            JOptionPane.showMessageDialog(null, "Cập nhật thất bại", "Lỗi khi cập nhật sơ sở dữ liệu", JOptionPane.INFORMATION_MESSAGE);
-        }
+//        cmbResult.setSelectedIndex(0);
+//        Integer classID = cmbClass.getSelectedIndex();
+//        if (classID < 0) {
+//            return;
+//        }
+//        CSVReader reader = new CSVReader();
+//        TableModel table = tableData.getModel();
+//        List<Score> dataFromTable;
+//        dataFromTable = new ArrayList<>();
+//        for (int i = 0; i < table.getRowCount(); i++) {
+//            List<String> rowData = new ArrayList<>();
+//            for (int j = 0; j < table.getColumnCount(); j++) {
+//                rowData.add(table.getValueAt(i, j).toString());
+//            }
+//
+//            Score score = Score.readFromMetaData(rowData);
+//            dataFromTable.add(score);
+//        }
+//
+//        CSVWriter writer = new CSVWriter();
+//        String filename = "/Data/Score/" + classNames.get(classID) + ".csv";
+//        Boolean isS = writer.writeCSV(filename, dataFromTable, new Score());
+//        if (isS) {
+//            JOptionPane.showMessageDialog(null, "Cập nhật thành công", "Đã cập nhật điểm số vào sơ sở dữ liệu", JOptionPane.INFORMATION_MESSAGE);
+//            String[][] dataTable = new String[dataFromTable.size()][5];
+//            for (int i = 0; i < dataFromTable.size(); i++) {
+//                dataTable[i] = dataFromTable.get(i).toStringData(Integer.toString(i));
+//            }
+//            TableModel tbModel;
+//            tbModel = new DefaultTableModel(dataTable, columnNames);
+//            tableData.removeAll();
+//            tableData.setModel(tbModel);
+//        } else {
+//            JOptionPane.showMessageDialog(null, "Cập nhật thất bại", "Lỗi khi cập nhật sơ sở dữ liệu", JOptionPane.INFORMATION_MESSAGE);
+//        }
     }//GEN-LAST:event_btnUpdateActionPerformed
-
+public void updateCombox() {
+        cmbClass.removeAllItems();
+        ScoreDAO dao = new ScoreDAO();
+        List<String> list = dao.getAllSubject();
+        for (int i = 0; i < list.size(); i++) {
+            cmbClass.addItem(list.get(i));
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnUpdate;

@@ -52,44 +52,8 @@ public class Utils {
         return list;
     }
 
-    public static Boolean importClass(String filename) {
-        List<List<String>> records = new ArrayList<List<String>>();
-        String classN = "";
-        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-            classN = br.readLine().replace(",", "");//.replaceAll("[^\\x00-\\x7F]", "");
-            String header = br.readLine();
-            records = CSVReader.readToBuffer(br);
-        } catch (IOException e) {
-            return false;
-        }
-        List<Student2> data = new ArrayList<Student2>();
-        for (int i = 0; i < records.size(); i++) {
-            List<String> metaData = records.get(i);
-            data.add(Student2.readFromMetaData(metaData));
-        }
-
-        String rootUrl = Utils.getAbsolutePath(Student2.getString());
-        List<String> fileName = Utils.listAllCSVFile(Student2.getString());
-        int idx = fileName.indexOf(classN);
-        if (idx != -1) {
-            String existPath = "/Data/" + Student2.getString() + "/" + fileName.get(idx) + ".csv";
-            CSVReader<Student2> reader = new CSVReader();
-            List<Student2> existStudent = reader.readCSV(existPath, new Student2());
-            for (int i = 0; i < existStudent.size(); i++) {
-                data.add(existStudent.get(i));
-            }
-        }
-
-        String fileOutput = rootUrl + classN + ".csv";
-        CSVWriter<Student2> writer = new CSVWriter<>();
-
-        File file = new File(fileOutput);
-        Boolean isS = writer.writeToFile(file, data);
-        return isS;
-    }
-
     public static Boolean importTimetable(String filename) {
-        List<List<String>> records = new ArrayList<List<String>>();
+        List<List<String>> records = new ArrayList<>();
         String classN = "";
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             classN = br.readLine().replace(",", "");//.replaceAll( "[^\\x00-\\x7F]", "" );
@@ -124,41 +88,6 @@ public class Utils {
         return isS;
     }
 
-    public static Boolean importScore(String filename) {
-        List<List<String>> records = new ArrayList<List<String>>();
-        String classN = "";
-        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-            classN = br.readLine().replace(",", "");//.replaceAll( "[^\\x00-\\x7F]", "" );
-            String header = br.readLine();
-            records = CSVReader.readToBuffer(br);
-        } catch (IOException e) {
-            return false;
-        }
-        List<Score> data = new ArrayList<Score>();
-        for (int i = 0; i < records.size(); i++) {
-            List<String> metaData = records.get(i);
-            data.add(Score.readFromMetaData(metaData));
-        }
-
-        String rootUrl = Utils.getAbsolutePath(Score.getString());
-        List<String> fileName = Utils.listAllCSVFile(Score.getString());
-        int idx = fileName.indexOf(classN);
-        if (idx != -1) {
-            String existPath = "/Data/" + Score.getString() + "/" + fileName.get(idx) + ".csv";
-            CSVReader<Score> reader = new CSVReader();
-            List<Score> existScore = reader.readCSV(existPath, new Score());
-            for (int i = 0; i < existScore.size(); i++) {
-                data.add(existScore.get(i));
-            }
-        }
-
-        String fileOutput = rootUrl + classN + ".csv";
-        CSVWriter<Score> writer = new CSVWriter<>();
-
-        File file = new File(fileOutput);
-        Boolean isS = writer.writeToFile(file, data);
-        return isS;
-    }
 
     public static List<String> listAllCSVFile(String key) {
         String dir = Utils.getAbsolutePath(key);

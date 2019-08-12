@@ -148,19 +148,7 @@ public class Student2 {
         return data;
     }
 
-    public static Student2 readFromMetaData(List<String> metaData) {
-        if(metaData.size() <= 0){
-            return new Student2();
-        }
-        String no = metaData.get(0);
-        String stdID = metaData.get(1);
-        String fullName = metaData.get(2);
-        String gender = metaData.get(3);
-        String IDCard = metaData.get(4);
-
-        // create and return book of this metadata
-        return new Student2(no, stdID, fullName, gender, IDCard);
-    }
+    
     
     public static String getString(){
         return "Student";

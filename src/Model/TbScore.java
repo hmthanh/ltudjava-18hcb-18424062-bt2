@@ -1,5 +1,5 @@
 package Model;
-// Generated Aug 7, 2019 9:04:54 AM by Hibernate Tools 4.3.1
+// Generated Aug 9, 2019 2:11:40 PM by Hibernate Tools 4.3.1
 
 
 
@@ -10,27 +10,29 @@ public class TbScore  implements java.io.Serializable {
 
 
      private Integer no;
-     private int studentId;
+     private String studentId;
      private String fullname;
      private Float middleExam;
      private Float finalExam;
      private Float plusExam;
      private Float avgScore;
+     private String subjectId;
 
     public TbScore() {
     }
 
 	
-    public TbScore(int studentId) {
+    public TbScore(String studentId) {
         this.studentId = studentId;
     }
-    public TbScore(int studentId, String fullname, Float middleExam, Float finalExam, Float plusExam, Float avgScore) {
+    public TbScore(String studentId, String fullname, Float middleExam, Float finalExam, Float plusExam, Float avgScore, String subjectId) {
        this.studentId = studentId;
        this.fullname = fullname;
        this.middleExam = middleExam;
        this.finalExam = finalExam;
        this.plusExam = plusExam;
        this.avgScore = avgScore;
+       this.subjectId = subjectId;
     }
    
     public Integer getNo() {
@@ -40,11 +42,11 @@ public class TbScore  implements java.io.Serializable {
     public void setNo(Integer no) {
         this.no = no;
     }
-    public int getStudentId() {
+    public String getStudentId() {
         return this.studentId;
     }
     
-    public void setStudentId(int studentId) {
+    public void setStudentId(String studentId) {
         this.studentId = studentId;
     }
     public String getFullname() {
@@ -81,6 +83,13 @@ public class TbScore  implements java.io.Serializable {
     
     public void setAvgScore(Float avgScore) {
         this.avgScore = avgScore;
+    }
+    public String getSubjectId() {
+        return this.subjectId;
+    }
+    
+    public void setSubjectId(String subjectId) {
+        this.subjectId = subjectId;
     }
 
 

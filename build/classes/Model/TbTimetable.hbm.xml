@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Aug 7, 2019 9:04:55 AM by Hibernate Tools 4.3.1 -->
+<!-- Generated Aug 9, 2019 2:11:40 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="Model.TbTimetable" table="tb_timetable" catalog="hmthanh" optimistic-lock="version">
         <id name="no" type="java.lang.Integer">
@@ -11,11 +11,11 @@
         <property name="subjectId" type="java.lang.Integer">
             <column name="SubjectID" />
         </property>
-        <property name="classId" type="java.lang.Integer">
-            <column name="ClassID" />
+        <property name="subjectName" type="string">
+            <column name="SubjectName" length="65535" />
         </property>
-        <property name="studentId" type="java.lang.Integer">
-            <column name="StudentID" />
+        <property name="room" type="java.lang.Integer">
+            <column name="Room" />
         </property>
     </class>
 </hibernate-mapping>

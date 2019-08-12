@@ -1,18 +1,27 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Aug 7, 2019 9:04:55 AM by Hibernate Tools 4.3.1 -->
+<!-- Generated Aug 9, 2019 2:11:40 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="Model.TbClasses" table="tb_classes" catalog="hmthanh" optimistic-lock="version">
         <id name="no" type="java.lang.Integer">
             <column name="No" />
             <generator class="identity" />
         </id>
-        <property name="classId" type="string">
-            <column name="ClassID" length="0" />
+        <property name="studentId" type="string">
+            <column name="StudentID" />
         </property>
-        <property name="className" type="string">
-            <column name="ClassName" length="11" />
+        <property name="fullname" type="string">
+            <column name="Fullname" length="65535" />
+        </property>
+        <property name="gender" type="string">
+            <column name="Gender" />
+        </property>
+        <property name="cardId" type="string">
+            <column name="CardID" />
+        </property>
+        <property name="subjectId" type="string">
+            <column name="SubjectID" />
         </property>
     </class>
 </hibernate-mapping>

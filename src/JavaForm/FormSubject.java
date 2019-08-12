@@ -5,11 +5,11 @@
  */
 package JavaForm;
 
-import Entities.Student2;
-import JavaCode.CSVReader;
+import DAO.SubjectDAO;
+import Model.TbSubject;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -18,7 +18,7 @@ import javax.swing.table.TableModel;
 public class FormSubject extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form frmStudent
+     * Creates new form frmSubject
      */
     public FormSubject() {
         initComponents();
@@ -36,7 +36,7 @@ public class FormSubject extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableData = new javax.swing.JTable();
-        combClass = new javax.swing.JComboBox<>();
+        cmbClass = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(600, 500));
@@ -71,10 +71,10 @@ public class FormSubject extends javax.swing.JInternalFrame {
         ));
         jScrollPane2.setViewportView(tableData);
 
-        combClass.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        combClass.addItemListener(new java.awt.event.ItemListener() {
+        cmbClass.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbClass.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                combClassItemStateChanged(evt);
+                cmbClassItemStateChanged(evt);
             }
         });
 
@@ -91,7 +91,7 @@ public class FormSubject extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(48, 48, 48)
-                        .addComponent(combClass, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cmbClass, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(100, 100, 100)
                         .addComponent(jLabel1)))
@@ -108,7 +108,7 @@ public class FormSubject extends javax.swing.JInternalFrame {
                         .addGap(31, 31, 31)
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(combClass, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cmbClass, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(77, Short.MAX_VALUE))
         );
 
@@ -119,7 +119,7 @@ public class FormSubject extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -131,44 +131,52 @@ public class FormSubject extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private final String[] columnNames = {"STT", "MSSV", "Họ tên", "Gới tính", "CMND"};
-    public String[] classNames = {"18HCB", "17HCB"};
-
-    public void LoadStudentToTable(Integer classID) {
+    public void LoadSubjectToTable(Integer classID) {
         // TODO add your handling code here:
-        CSVReader reader = new CSVReader();
-        Student2 std = new Student2();
-        List<Student2> data = reader.readCSV("/Data/Subject/" + classNames[classID] + ".csv", std);
-        String[][] dataTable = new String[data.size()][5];
-        for (int i = 0; i < data.size(); i++) {
-            dataTable[i] = data.get(i).toStringData(Integer.toString(i));
+        String className = cmbClass.getSelectedItem().toString();
+        SubjectDAO dao = new SubjectDAO();
+        List<TbSubject> list = dao.getSubjectByClass(className);
+        List<String[]> dataTable = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            TbSubject std = list.get(i);
+            String[] obj = new String[5];
+            obj[0] = std.getNo().toString();
+            obj[1] = std.getSubjectId().toString();
+            obj[2] = std.getName();
+            obj[3] = std.getRoom();
+            obj[4] = std.getClassId();
+            dataTable.add(obj);
         }
-        TableModel table;
-        table = new DefaultTableModel(dataTable, columnNames);
+        Object[] columnNames = {"STT", "MSSV", "Họ và tên", "Giới tính", "CMND"};
+        DefaultTableModel model = new DefaultTableModel(dataTable.toArray(new Object[][]{}), columnNames);
         tableData.removeAll();
-        tableData.setModel(table);
+        tableData.setModel(model);
     }
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
-        LoadStudentToTable(1);
-        combClass.removeAllItems();
-        combClass.addItem(classNames[0]);
-        combClass.addItem(classNames[1]);
+        LoadSubjectToTable(1);
+        updateComb();
 
     }//GEN-LAST:event_formInternalFrameOpened
 
-    private void combClassItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_combClassItemStateChanged
+    private void cmbClassItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbClassItemStateChanged
         // TODO add your handling code here:
-        Integer classID = combClass.getSelectedIndex();
+        Integer classID = cmbClass.getSelectedIndex();
         if (classID >= 0) {
-            System.out.println(Integer.toString(classID));
-            LoadStudentToTable(classID);
+            LoadSubjectToTable(classID);
         }
 
-    }//GEN-LAST:event_combClassItemStateChanged
-    
+    }//GEN-LAST:event_cmbClassItemStateChanged
+    public void updateComb() {
+        cmbClass.removeAllItems();
+        SubjectDAO dao = new SubjectDAO();
+        List<String> list = dao.getAllClass();
+        for (int i = 0; i < list.size(); i++) {
+            cmbClass.addItem(list.get(i));
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> combClass;
+    private javax.swing.JComboBox<String> cmbClass;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
