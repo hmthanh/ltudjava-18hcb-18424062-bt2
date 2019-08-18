@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 15, 2019 4:13:09 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Model.TbSubject" table="tb_subject" catalog="hmthanh" optimistic-lock="version">
+        <id name="no" type="java.lang.Integer">
+            <column name="No" />
+            <generator class="identity" />
+        </id>
+        <property name="subjectId" type="string">
+            <column name="SubjectID" />
+        </property>
+        <property name="name" type="string">
+            <column name="Name" length="65535" />
+        </property>
+        <property name="room" type="string">
+            <column name="Room" />
+        </property>
+        <property name="classId" type="string">
+            <column name="ClassID" />
+        </property>
+    </class>
+</hibernate-mapping>
