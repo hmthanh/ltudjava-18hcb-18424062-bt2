@@ -6,10 +6,7 @@
 package JavaForm;
 
 import DAO.AccountDAO;
-import JavaCode.CSVReader;
-import JavaCode.CSVWriter;
-import java.util.Arrays;
-import java.util.List;
+import static JavaForm.FormLogin.PermitionIndex;
 import javax.swing.JOptionPane;
 
 /**
@@ -45,6 +42,7 @@ public class FormChangePassword extends javax.swing.JFrame {
         jlabel_Password2 = new javax.swing.JLabel();
         jlabel_Username1 = new javax.swing.JLabel();
         cmbPermit = new javax.swing.JComboBox<>();
+        btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login Form");
@@ -58,7 +56,7 @@ public class FormChangePassword extends javax.swing.JFrame {
         });
 
         jbtnLogin.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jbtnLogin.setText("Đăng nhập");
+        jbtnLogin.setText("Đổi mật khẩu");
         jbtnLogin.setName("Login"); // NOI18N
         jbtnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -96,6 +94,15 @@ public class FormChangePassword extends javax.swing.JFrame {
         cmbPermit.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         cmbPermit.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        btnCancel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnCancel.setText("Hủy");
+        btnCancel.setName("Login"); // NOI18N
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -103,28 +110,29 @@ public class FormChangePassword extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(64, 64, 64)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jbtnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(88, 88, 88))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jlabel_Username)
-                                .addComponent(jlabel_Password1)
-                                .addComponent(jlabel_Password)
-                                .addComponent(jlabel_Password2))
-                            .addGap(18, 18, 18)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtOld)
-                                .addComponent(txtUsername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
-                                .addComponent(txtPassword1)
-                                .addComponent(txtPassword2))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jlabel_Username)
+                            .addComponent(jlabel_Password1)
+                            .addComponent(jlabel_Password)
+                            .addComponent(jlabel_Password2))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtOld)
+                            .addComponent(txtUsername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
+                            .addComponent(txtPassword1)
+                            .addComponent(txtPassword2)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jlabel_Username1)
                         .addGap(18, 18, 18)
                         .addComponent(cmbPermit, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(88, Short.MAX_VALUE)
+                .addComponent(jbtnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49)
+                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(85, 85, 85))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,9 +157,11 @@ public class FormChangePassword extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlabel_Password)
                     .addComponent(txtPassword2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jbtnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbtnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24))
         );
 
         pack();
@@ -165,6 +175,7 @@ public class FormChangePassword extends javax.swing.JFrame {
         txtUsername.setText(FormLogin.UsernameLogin);
         txtOld.setText(FormLogin.PasswordLogin);
         cmbPermit.setSelectedIndex(FormLogin.PermitionIndex);
+        cmbPermit.setEnabled(false);
     }//GEN-LAST:event_formWindowOpened
 
     private void jbtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnLoginActionPerformed
@@ -188,12 +199,31 @@ public class FormChangePassword extends javax.swing.JFrame {
             txtPassword1.setText("");
         } else {
             dao.updatePassword(username, old, permit, password1);
-            this.setVisible(false);
+            if (FormLogin.PermitionIndex == 0) {
+                java.awt.EventQueue.invokeLater(() -> {
+                    new StudentPermittion().setVisible(true);
+                });
+            } else {
+                java.awt.EventQueue.invokeLater(() -> {
+                    new AdminPermittion().setVisible(true);
+                });
+            }
+        }
+    }//GEN-LAST:event_jbtnLoginActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        if (FormLogin.PermitionIndex == 0) {
+            java.awt.EventQueue.invokeLater(() -> {
+                new StudentPermittion().setVisible(true);
+            });
+        } else {
             java.awt.EventQueue.invokeLater(() -> {
                 new AdminPermittion().setVisible(true);
             });
         }
-    }//GEN-LAST:event_jbtnLoginActionPerformed
+    }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -222,7 +252,7 @@ public class FormChangePassword extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
-        
+
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -238,9 +268,9 @@ public class FormChangePassword extends javax.swing.JFrame {
         });
     }
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancel;
     private javax.swing.JComboBox<String> cmbPermit;
     private javax.swing.JButton jbtnLogin;
     private javax.swing.JLabel jlabel_Password;

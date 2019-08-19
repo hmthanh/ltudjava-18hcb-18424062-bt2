@@ -6,10 +6,6 @@
 package JavaForm;
 
 import DAO.SubjectDAO;
-import DAO.SubjectDAO;
-import Entities.Subject;
-import JavaCode.CSVReader;
-import JavaCode.Utils;
 import Model.TbSubject;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;

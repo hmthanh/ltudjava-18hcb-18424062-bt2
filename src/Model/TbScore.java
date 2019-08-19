@@ -9,14 +9,14 @@ package Model;
 public class TbScore  implements java.io.Serializable {
 
 
-     private Integer no;
-     private String studentId;
-     private String fullname;
-     private Float middleExam;
-     private Float finalExam;
-     private Float plusExam;
-     private Float avgScore;
-     private String subjectId;
+    private Integer no;
+    private String studentId;
+    private String fullname;
+    private Float middleExam;
+    private Float finalExam;
+    private Float plusExam;
+    private Float avgScore;
+    private String subjectId;
 
     public TbScore() {
     }

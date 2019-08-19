@@ -5,8 +5,11 @@
  */
 package JavaForm;
 
-import DAO.StudentDAO;
+import DAO.ScoreDAO;
+import Model.TbScore;
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -15,7 +18,7 @@ import java.util.List;
 public class FormStudentScore extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form frmStudent
+     * Creates new form frmScore
      */
     public FormStudentScore() {
         initComponents();
@@ -116,7 +119,7 @@ public class FormStudentScore extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,33 +131,32 @@ public class FormStudentScore extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private final String[] columnNames = {"STT", "MSSV", "Họ tên", "Điểm GK", "Điểm CK", "Điểm khác", "Điểm tổng"};
 
-    public void LoadStudentToTable(Integer classID) {
+    public void LoadData() {
         // TODO add your handling code here:
-//        CSVReader reader = new CSVReader();
-//        Score std = new Score();
-//        List<Score> list = reader.readCSV("/Data/Score/" + classNames.get(classID) + ".csv", std);
-//        List<Score> data = new ArrayList<>();
-//        String userid = FormLogin.UsernameLogin;
-//        for (int i = 0; i < list.size(); i++) {
-//            String stdID = list.get(i).getStdID();
-//            if (userid.equals(stdID)) {
-//                data.add(list.get(i));
-//                break;
-//            }
-//        }
-//        String[][] dataTable = new String[data.size()][7];
-//        for (int i = 0; i < data.size(); i++) {
-//            dataTable[i] = data.get(i).toStringData(Integer.toString(i));
-//        }
-//        TableModel table;
-//        table = new DefaultTableModel(dataTable, columnNames);
-//        tableData.removeAll();
-//        tableData.setModel(table);
+        String className = cmbClass.getSelectedItem().toString();
+        ScoreDAO dao = new ScoreDAO();
+        List<TbScore> data = dao.filter(className);
+        
+        String[][] dataTable = new String[data.size()][7];
+        for (int i = 0; i < data.size(); i++) {
+            TbScore item = data.get(i);
+            dataTable[i][0] = String.valueOf(item.getNo());
+            dataTable[i][1] = item.getStudentId();
+            dataTable[i][2] = item.getFullname();
+            dataTable[i][3] = String.valueOf(item.getMiddleExam());
+            dataTable[i][4] = String.valueOf(item.getFinalExam());
+            dataTable[i][5] = String.valueOf(item.getPlusExam());
+            dataTable[i][6] = String.valueOf(item.getAvgScore());
+        }
+        TableModel table;
+        String[] columnNames = {"STT", "MSSV", "Họ tên", "Điểm GK", "Điểm CK", "Điểm khác", "Điểm tổng"};
+        table = new DefaultTableModel(dataTable, columnNames);
+        tableData.removeAll();
+        tableData.setModel(table);
     }
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
-        LoadStudentToTable(0);
+        LoadData();
         updateCmb();
     }//GEN-LAST:event_formInternalFrameOpened
 
@@ -163,12 +165,12 @@ public class FormStudentScore extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         Integer classID = cmbClass.getSelectedIndex();
         if (classID >= 0) {
-            LoadStudentToTable(classID);
+            LoadData();
         }
 
     }//GEN-LAST:event_cmbClassItemStateChanged
    public void updateCmb() {
-        StudentDAO dao = new StudentDAO();
+        ScoreDAO dao = new ScoreDAO();
         List<String> classes = dao.getClasses();
         this.cmbClass.removeAllItems();
         for (int i = 0; i < classes.size(); i++) {

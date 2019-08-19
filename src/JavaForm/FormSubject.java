@@ -5,12 +5,6 @@
  */
 package JavaForm;
 
-import Entities.Student2;
-import JavaCode.CSVReader;
-import java.util.List;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-
 /**
  *
  * @author sieus
@@ -131,10 +125,11 @@ public class FormSubject extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private final String[] columnNames = {"STT", "MSSV", "Họ tên", "Gới tính", "CMND"};
     
-    public void LoadStudentToTable(Integer classID) {
+    
+    public void LoadStudentToTable() {
         // TODO add your handling code here:
+        String[] columnNames = {"STT", "MSSV", "Họ tên", "Gới tính", "CMND"};
 //        CSVReader reader = new CSVReader();
 //        Student2 std = new Student2();
 //        List<Student2> data = reader.readCSV("/Data/Subject/" + classNames[classID] + ".csv", std);
@@ -148,7 +143,7 @@ public class FormSubject extends javax.swing.JInternalFrame {
 //        tableData.setModel(table);
     }
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
-        LoadStudentToTable(1);
+        LoadStudentToTable();
         combClass.removeAllItems();
         combClass.addItem("Nam");
         combClass.addItem("Nữ");
@@ -159,8 +154,7 @@ public class FormSubject extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         Integer classID = combClass.getSelectedIndex();
         if (classID >= 0) {
-            System.out.println(Integer.toString(classID));
-            LoadStudentToTable(classID);
+            LoadStudentToTable();
         }
 
     }//GEN-LAST:event_combClassItemStateChanged
