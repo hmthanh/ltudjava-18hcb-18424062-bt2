@@ -47,7 +47,7 @@ public class AccountDAO extends AbstractDAO<TbAccount> {
         result = stream.collect(Collectors.toList());
         return result;
     }
-
+	# Add role
     public Boolean hasRole(String username, String password, String permit) {
         List<TbAccount> list = filter(permit);
         for (int i = 0; i < list.size(); i++) {
