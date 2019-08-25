@@ -195,7 +195,7 @@ public class FormAddStudent extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Thất bại", "Thêm sinh viên thất bại !", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
-
+	# update cmb
     public void updateCmb() {
         StudentDAO dao = new StudentDAO();
         List<String> classes = dao.getClasses();
