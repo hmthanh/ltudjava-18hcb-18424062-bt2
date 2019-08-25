@@ -54,6 +54,9 @@ public class AdminPermittion extends javax.swing.JFrame {
         menuTimetable = new javax.swing.JMenu();
         menuTime = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+        menuReExam = new javax.swing.JMenu();
+        menuItemCreateReexam = new javax.swing.JMenuItem();
+        menuItemReexam = new javax.swing.JMenuItem();
 
         javax.swing.GroupLayout frmStudentLayout = new javax.swing.GroupLayout(frmStudent.getContentPane());
         frmStudent.getContentPane().setLayout(frmStudentLayout);
@@ -203,6 +206,26 @@ public class AdminPermittion extends javax.swing.JFrame {
         menuTimetable.add(jMenuItem1);
 
         jMenuBar.add(menuTimetable);
+
+        menuReExam.setText("Phúc khảo");
+
+        menuItemCreateReexam.setText("Tạo phúc khảo");
+        menuItemCreateReexam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemCreateReexamActionPerformed(evt);
+            }
+        });
+        menuReExam.add(menuItemCreateReexam);
+
+        menuItemReexam.setText("Danh sách phúc khảo");
+        menuItemReexam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemReexamActionPerformed(evt);
+            }
+        });
+        menuReExam.add(menuItemReexam);
+
+        jMenuBar.add(menuReExam);
 
         setJMenuBar(jMenuBar);
 
@@ -390,6 +413,28 @@ public class AdminPermittion extends javax.swing.JFrame {
         frm.setVisible(true);
     }//GEN-LAST:event_menuAddSubjectStudentActionPerformed
 
+    private void menuItemCreateReexamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemCreateReexamActionPerformed
+        // TODO add your handling code here:
+        frmDesktop.removeAll();
+        FormCreateRemarking frm = new FormCreateRemarking();
+        int frmWidth = this.getWidth();
+        int frmHeight = this.getHeight();
+        frm.setSize(frmWidth, frmHeight);
+        frmDesktop.add(frm);
+        frm.setVisible(true);
+    }//GEN-LAST:event_menuItemCreateReexamActionPerformed
+
+    private void menuItemReexamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemReexamActionPerformed
+        // TODO add your handling code here:
+        frmDesktop.removeAll();
+        FormListRemarking frm = new FormListRemarking();
+        int frmWidth = this.getWidth();
+        int frmHeight = this.getHeight();
+        frm.setSize(frmWidth, frmHeight);
+        frmDesktop.add(frm);
+        frm.setVisible(true);
+    }//GEN-LAST:event_menuItemReexamActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -436,11 +481,14 @@ public class AdminPermittion extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuChoseClass;
     private javax.swing.JMenu menuHome;
     private javax.swing.JMenuItem menuImportScore;
+    private javax.swing.JMenuItem menuItemCreateReexam;
     private javax.swing.JMenuItem menuItemListAll;
     private javax.swing.JMenuItem menuItemOpen;
     private javax.swing.JMenuItem menuItemPassword;
+    private javax.swing.JMenuItem menuItemReexam;
     private javax.swing.JMenuItem menuItemScore;
     private javax.swing.JMenuItem menuItemTimetable;
+    private javax.swing.JMenu menuReExam;
     private javax.swing.JMenu menuScore;
     private javax.swing.JMenu menuStudent;
     private javax.swing.JMenu menuSubject;

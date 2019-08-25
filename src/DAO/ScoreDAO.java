@@ -6,11 +6,13 @@
 package DAO;
 
 import JavaCode.CSVReader;
+import JavaCode.HibernateUtils;
 import Model.TbScore;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -19,6 +21,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 class SortBySubject implements Comparator<TbScore> {
 
@@ -86,13 +91,26 @@ public class ScoreDAO extends AbstractDAO<TbScore> {
         return result;
     }
 
+    public List<TbScore> filter(String filter, String studentID) {
+        List<TbScore> list = filter(filter);
+        List<TbScore> result = new ArrayList();
+        Stream<TbScore> stream = list.stream().filter((TbScore item) -> {
+            if (item == null) {
+                return false;
+            } else if (item.getStudentId() != null) {
+                return item.getStudentId().equals(studentID);
+            } else {
+                return false;
+            }
+        });
+        result = stream.collect(Collectors.toList());
+        return result;
+    }
+
     public List<TbScore> getAllByFilter(Integer filter, String className) {
         List<TbScore> list = super.getAll("TbScore");
         List<TbScore> result = new ArrayList();
         Stream<TbScore> stream = list.stream().filter((TbScore item) -> {
-            System.out.println(item.getSubjectId());
-            System.out.println(className);
-            System.out.println(item.getSubjectId().equals(className));
             if (item.getSubjectId() != null) {
                 Boolean trueSub = item.getSubjectId().equals(className);
                 if (trueSub) {
@@ -115,20 +133,22 @@ public class ScoreDAO extends AbstractDAO<TbScore> {
         result = stream.collect(Collectors.toList());
         return result;
     }
-    
-    public List<String> statistic(List<TbScore> list){
-        List<TbScore> good = list.stream().filter(item -> item.getAvgScore() >= (float)5.0).collect(Collectors.toList());
-        List<TbScore> bad = list.stream().filter(item -> item.getAvgScore() < (float)5.0).collect(Collectors.toList());
+
+    public List<String> statistic(List<TbScore> list) {
+        List<TbScore> good = list.stream().filter(item -> item.getAvgScore() >= (float) 5.0).collect(Collectors.toList());
+        List<TbScore> bad = list.stream().filter(item -> item.getAvgScore() < (float) 5.0).collect(Collectors.toList());
         List<String> result = new ArrayList<>();
+        DecimalFormat decFormat = new DecimalFormat();
+        decFormat.setMaximumFractionDigits(2);
         Integer goodNum = good.size();
         Integer badNum = bad.size();
-        Float propGood = (float)goodNum/list.size()*100;
-        Float propBad = (float)badNum/list.size()*100;
-        result.add(goodNum.toString());
-        result.add(badNum.toString());
-        result.add(propGood.toString());
-        result.add(propBad.toString());
-        
+        Float propGood = (float) goodNum / list.size() * 100;
+        Float propBad = (float) badNum / list.size() * 100;
+        result.add(decFormat.format(goodNum));
+        result.add(decFormat.format(badNum));
+        result.add(decFormat.format(propGood));
+        result.add(decFormat.format(propBad));
+
         return result;
     }
 
@@ -140,5 +160,37 @@ public class ScoreDAO extends AbstractDAO<TbScore> {
             set.add(list.get(i).getSubjectId());
         }
         return new ArrayList<>(set);
+    }
+
+    public Boolean update(TbScore item) {
+        if (item == null) {
+            return false;
+        }
+        Session session = HibernateUtils.getSessionFactory().openSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            session.update(item);
+            transaction.commit();
+        } catch (HibernateException ex) {
+            transaction.rollback();
+            System.err.println(ex);
+            session.close();
+            return false;
+        }
+        session.close();
+        return true;
+    }
+
+    public Boolean updateFromList(List<TbScore> list) {
+        try {
+            for (int i = 0; i < list.size(); i++) {
+                update(list.get(i));
+            }
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
     }
 }

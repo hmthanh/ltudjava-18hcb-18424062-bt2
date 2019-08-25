@@ -35,6 +35,8 @@ public class StudentPermittion extends javax.swing.JFrame {
         menuItemPassword = new javax.swing.JMenuItem();
         menuScore = new javax.swing.JMenu();
         menuItemScore = new javax.swing.JMenuItem();
+        menuRemarking = new javax.swing.JMenu();
+        menuItemRemarking = new javax.swing.JMenuItem();
 
         javax.swing.GroupLayout frmStudentLayout = new javax.swing.GroupLayout(frmStudent.getContentPane());
         frmStudent.getContentPane().setLayout(frmStudentLayout);
@@ -102,6 +104,18 @@ public class StudentPermittion extends javax.swing.JFrame {
 
         jMenuBar.add(menuScore);
 
+        menuRemarking.setText("Phúc khảo");
+
+        menuItemRemarking.setText("Phúc khảo");
+        menuItemRemarking.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemRemarkingActionPerformed(evt);
+            }
+        });
+        menuRemarking.add(menuItemRemarking);
+
+        jMenuBar.add(menuRemarking);
+
         setJMenuBar(jMenuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -150,6 +164,17 @@ public class StudentPermittion extends javax.swing.JFrame {
             new FormChangePassword().setVisible(true);
         });
     }//GEN-LAST:event_menuItemPasswordActionPerformed
+
+    private void menuItemRemarkingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemRemarkingActionPerformed
+        // TODO add your handling code here:
+        frmDesktop.removeAll();
+        FormRemarking frm = new FormRemarking();
+        int frmWidth = this.getWidth();
+        int frmHeight = this.getHeight();
+        frm.setSize(frmWidth, frmHeight);
+        frmDesktop.add(frm);
+        frm.setVisible(true);
+    }//GEN-LAST:event_menuItemRemarkingActionPerformed
     public static FormStudent _frmStudent = new FormStudent();
     public static FormScore _frmScore = new FormScore();
     public static FormSubject _frmSubject = new FormSubject();
@@ -192,7 +217,7 @@ public class StudentPermittion extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             new StudentPermittion().setVisible(true);
-        });
+        });                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -202,7 +227,9 @@ public class StudentPermittion extends javax.swing.JFrame {
     private javax.swing.JMenu menuHome;
     private javax.swing.JMenuItem menuItemOpen;
     private javax.swing.JMenuItem menuItemPassword;
+    private javax.swing.JMenuItem menuItemRemarking;
     private javax.swing.JMenuItem menuItemScore;
+    private javax.swing.JMenu menuRemarking;
     private javax.swing.JMenu menuScore;
     // End of variables declaration//GEN-END:variables
 }

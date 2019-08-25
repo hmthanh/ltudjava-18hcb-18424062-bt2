@@ -1,5 +1,5 @@
 package Model;
-// Generated Aug 15, 2019 4:13:09 PM by Hibernate Tools 4.3.1
+// Generated Aug 24, 2019 3:06:05 PM by Hibernate Tools 4.3.1
 
 
 
@@ -9,14 +9,14 @@ package Model;
 public class TbScore  implements java.io.Serializable {
 
 
-    private Integer no;
-    private String studentId;
-    private String fullname;
-    private Float middleExam;
-    private Float finalExam;
-    private Float plusExam;
-    private Float avgScore;
-    private String subjectId;
+     private Integer no;
+     private String studentId;
+     private String fullname;
+     private Float middleExam;
+     private Float finalExam;
+     private Float plusExam;
+     private Float avgScore;
+     private String subjectId;
 
     public TbScore() {
     }

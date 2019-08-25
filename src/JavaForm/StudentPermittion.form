@@ -60,6 +60,21 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="menuRemarking">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Ph&#xfa;c kh&#x1ea3;o"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="menuItemRemarking">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Ph&#xfa;c kh&#x1ea3;o"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemRemarkingActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
       </SubComponents>
     </Menu>
   </NonVisualComponents>

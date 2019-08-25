@@ -6,17 +6,10 @@
 package JavaForm;
 
 import DAO.ScoreDAO;
-import DAO.StudentDAO;
-import Entities.Score;
-import JavaCode.CSVReader;
-import JavaCode.CSVWriter;
 import Model.TbScore;
-import Model.TbStudent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -268,7 +261,6 @@ public class FormScore extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         String className = cmbClass.getSelectedItem().toString();
         Integer filter = cmbResult.getSelectedIndex();
-        String[] columnNames = {"STT", "MSSV", "Họ tên", "Điểm GK", "Điểm CK", "Điểm khác", "Điểm tổng"};
         ScoreDAO dao = new ScoreDAO();
         List<TbScore> data = dao.getAllByFilter(filter, className);
         List<String> statistic = dao.statistic(data);
@@ -276,18 +268,20 @@ public class FormScore extends javax.swing.JInternalFrame {
         soRot_1.setText(statistic.get(1));
         soDau_2.setText(statistic.get(2) + " %");
         soRot_2.setText(statistic.get(3) + " %");
-        String[][] dataTable = new String[data.size()][7];
+        String[][] dataTable = new String[data.size()][8];
         for (int i = 0; i < data.size(); i++) {
             TbScore item = data.get(i);
-            dataTable[i][0] = String.valueOf(i);
+            dataTable[i][0] = String.valueOf(item.getNo());
             dataTable[i][1] = item.getStudentId();
             dataTable[i][2] = item.getFullname();
             dataTable[i][3] = item.getMiddleExam().toString();
             dataTable[i][4] = item.getFinalExam().toString();
             dataTable[i][5] = item.getPlusExam().toString();
             dataTable[i][6] = item.getAvgScore().toString();
+            dataTable[i][7] = item.getAvgScore() >= 5.0 ? "Đậu" : "Rớt";
         }
         TableModel table;
+        String[] columnNames = {"STT", "MSSV", "Họ tên", "Điểm GK", "Điểm CK", "Điểm khác", "Điểm tổng", "Kết quả"};
         table = new DefaultTableModel(dataTable, columnNames);
         tableData.removeAll();
         tableData.setModel(table);
@@ -299,32 +293,6 @@ public class FormScore extends javax.swing.JInternalFrame {
         cmbResult.addItem("Đậu");
         cmbResult.addItem("Rớt");
         LoadData();
-//        TableModel model = tableData.getModel();
-//        model.addTableModelListener((TableModelEvent tableModelEvent) -> {
-//            if (tableData.isEditing()) {
-//                Integer classID = cmbClass.getSelectedIndex();
-//                String value = (String) tableData.getValueAt(tableData.getSelectedRow(), 3);
-//                //do stuff  with value
-//                List<Score> dataFromTable;
-//                dataFromTable = new ArrayList<>();
-//                for (int i = 0; i < tableData.getRowCount(); i++) {
-//                    List<String> rowData = new ArrayList<>();
-//                    for (int j = 0; j < tableData.getColumnCount(); j++) {
-//                        rowData.add(tableData.getValueAt(i, j).toString());
-//                    }
-//                    
-//                    Score score = Score.readFromMetaData(rowData);
-//                    dataFromTable.add(score);
-//                }
-//                
-//                CSVWriter writer = new CSVWriter();
-//                String filename = "/Data/Score/" + classNames.get(classID) + ".csv";
-//                Boolean isS = writer.writeCSV(filename, dataFromTable, new Score());
-//                if (isS) {
-//                    JOptionPane.showMessageDialog(null, "Cập nhật thành công", "Đã cập nhật điểm số vào sơ sở dữ liệu", JOptionPane.INFORMATION_MESSAGE);
-//                }
-//            }
-//        });
     }//GEN-LAST:event_formInternalFrameOpened
 
 
@@ -346,42 +314,30 @@ public class FormScore extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cmbResultItemStateChanged
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-
         Integer classID = cmbClass.getSelectedIndex();
         if (classID >= 0) {
+            List<TbScore> list = new ArrayList();
+            for (int i = 0; i < tableData.getRowCount(); i++) {
+                Integer no = Integer.valueOf((String)tableData.getValueAt(i, 0));
+                String studentId = (String) tableData.getValueAt(i, 1);
+                String fullname = (String) tableData.getValueAt(i, 2);
+                Float middleExam = Float.valueOf((String) tableData.getValueAt(i, 3));
+                Float finalExam = Float.valueOf((String) tableData.getValueAt(i, 4));
+                Float plusExam = Float.valueOf((String) tableData.getValueAt(i, 5));
+                Float avgScore = Float.valueOf((String) tableData.getValueAt(i, 6));
+                String subjectID = cmbClass.getSelectedItem().toString();
+                TbScore item = new TbScore(studentId, fullname, middleExam, finalExam, plusExam, avgScore, subjectID);
+                item.setNo(no);
+                list.add(item);
+            }
+            
+            ScoreDAO dao = new ScoreDAO();
+            Boolean isUpdate = dao.updateFromList(list);
+            if (isUpdate) {
+                JOptionPane.showMessageDialog(null, "Cập nhật thành công", "Đã cập nhật điểm số vào sơ sở dữ liệu", JOptionPane.INFORMATION_MESSAGE);
+            }
             LoadData();
         }
-        
-//        CSVReader reader = new CSVReader();
-//        TableModel table = tableData.getModel();
-//        List<Score> dataFromTable;
-//        dataFromTable = new ArrayList<>();
-//        for (int i = 0; i < table.getRowCount(); i++) {
-//            List<String> rowData = new ArrayList<>();
-//            for (int j = 0; j < table.getColumnCount(); j++) {
-//                rowData.add(table.getValueAt(i, j).toString());
-//            }
-//
-//            Score score = Score.readFromMetaData(rowData);
-//            dataFromTable.add(score);
-//        }
-//
-//        CSVWriter writer = new CSVWriter();
-//        String filename = "/Data/Score/" + classNames.get(classID) + ".csv";
-//        Boolean isS = writer.writeCSV(filename, dataFromTable, new Score());
-//        if (isS) {
-//            JOptionPane.showMessageDialog(null, "Cập nhật thành công", "Đã cập nhật điểm số vào sơ sở dữ liệu", JOptionPane.INFORMATION_MESSAGE);
-//            String[][] dataTable = new String[dataFromTable.size()][5];
-//            for (int i = 0; i < dataFromTable.size(); i++) {
-//                dataTable[i] = dataFromTable.get(i).toStringData(Integer.toString(i));
-//            }
-//            TableModel tbModel;
-//            tbModel = new DefaultTableModel(dataTable, columnNames);
-//            tableData.removeAll();
-//            tableData.setModel(tbModel);
-//        } else {
-//            JOptionPane.showMessageDialog(null, "Cập nhật thất bại", "Lỗi khi cập nhật sơ sở dữ liệu", JOptionPane.INFORMATION_MESSAGE);
-//        }
     }//GEN-LAST:event_btnUpdateActionPerformed
     public void updateCmb() {
         ScoreDAO dao = new ScoreDAO();

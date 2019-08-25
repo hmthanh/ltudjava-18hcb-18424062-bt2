@@ -134,6 +134,7 @@ public class FormLogin extends javax.swing.JFrame {
         PasswordLogin = password;
         PermitionIndex = cmbPermit.getSelectedIndex();
         Boolean hasPermit = checkLogin(username, password);        
+        
         if (hasPermit) {
             this.setVisible(false);
             if (PermitionIndex == 0) {

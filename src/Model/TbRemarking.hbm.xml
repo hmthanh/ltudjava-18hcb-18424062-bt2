@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 24, 2019 3:06:05 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Model.TbRemarking" table="tb_remarking" catalog="hmthanh" optimistic-lock="version">
+        <id name="no" type="java.lang.Integer">
+            <column name="No" />
+            <generator class="identity" />
+        </id>
+        <property name="remarkId" type="string">
+            <column name="RemarkID" length="0" />
+        </property>
+        <property name="studentId" type="string">
+            <column name="StudentID" length="1000" />
+        </property>
+        <property name="fullname" type="string">
+            <column name="Fullname" length="1000" />
+        </property>
+        <property name="subject" type="string">
+            <column name="Subject" length="1000" />
+        </property>
+        <property name="colExam" type="string">
+            <column name="ColExam" />
+        </property>
+        <property name="mark" type="java.lang.Float">
+            <column name="Mark" precision="12" scale="0" />
+        </property>
+        <property name="reason" type="string">
+            <column name="Reason" />
+        </property>
+        <property name="status" type="string">
+            <column name="Status" length="1000" />
+        </property>
+    </class>
+</hibernate-mapping>

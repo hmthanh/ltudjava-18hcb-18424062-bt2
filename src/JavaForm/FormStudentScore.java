@@ -135,8 +135,9 @@ public class FormStudentScore extends javax.swing.JInternalFrame {
     public void LoadData() {
         // TODO add your handling code here:
         String className = cmbClass.getSelectedItem().toString();
+        String userName = FormLogin.UsernameLogin;
         ScoreDAO dao = new ScoreDAO();
-        List<TbScore> data = dao.filter(className);
+        List<TbScore> data = dao.filter(className, userName);
         
         String[][] dataTable = new String[data.size()][7];
         for (int i = 0; i < data.size(); i++) {
@@ -159,7 +160,6 @@ public class FormStudentScore extends javax.swing.JInternalFrame {
         LoadData();
         updateCmb();
     }//GEN-LAST:event_formInternalFrameOpened
-
 
     private void cmbClassItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbClassItemStateChanged
         // TODO add your handling code here:

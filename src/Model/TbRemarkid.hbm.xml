@@ -3,22 +3,19 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Aug 24, 2019 3:06:05 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="Model.TbSubject" table="tb_subject" catalog="hmthanh" optimistic-lock="version">
+    <class name="Model.TbRemarkid" table="tb_remarkid" catalog="hmthanh" optimistic-lock="version">
         <id name="no" type="java.lang.Integer">
             <column name="No" />
             <generator class="identity" />
         </id>
-        <property name="subjectId" type="string">
-            <column name="SubjectID" />
-        </property>
         <property name="name" type="string">
-            <column name="Name" length="65535" />
+            <column name="Name" />
         </property>
-        <property name="room" type="string">
-            <column name="Room" />
+        <property name="dateFrom" type="timestamp">
+            <column name="DateFrom" length="19" />
         </property>
-        <property name="classId" type="string">
-            <column name="ClassID" />
+        <property name="dateTo" type="timestamp">
+            <column name="DateTo" length="19" />
         </property>
     </class>
 </hibernate-mapping>
