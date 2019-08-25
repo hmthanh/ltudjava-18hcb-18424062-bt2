@@ -241,7 +241,7 @@ public class FormListRemarking extends javax.swing.JInternalFrame {
         }
         
     }
-	#GEN-LAST:event_btnUpdateActionPerformed
+	//GEN-LAST:event_btnUpdateActionPerformed
     public void updateCmb() {
         this.cmbRemark.removeAllItems();
         this.cmbStatus.removeAllItems();
